@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import ItemModal from './ItemModal';
 
 function formatValue(v){
   if (v === null || v === undefined) return '';
@@ -9,6 +10,8 @@ function formatValue(v){
 export default function Activities(){
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selected, setSelected] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   const fetchData = () => {
     setLoading(true);
@@ -27,6 +30,11 @@ export default function Activities(){
   useEffect(() => { fetchData(); }, []);
 
   const keys = data && data.length > 0 && typeof data[0] === 'object' ? Object.keys(data[0]) : [];
+
+  const onRowClick = (item) => {
+    setSelected(item);
+    setShowModal(true);
+  };
 
   return (
     <div className="card">
@@ -48,7 +56,7 @@ export default function Activities(){
               </thead>
               <tbody>
                 {data.map((item, idx) => (
-                  <tr key={idx}>
+                  <tr key={idx} style={{cursor: 'pointer'}} onClick={() => onRowClick(item)}>
                     {keys.map(k => <td key={k}>{formatValue(item[k])}</td>)}
                   </tr>
                 ))}
@@ -56,6 +64,8 @@ export default function Activities(){
             </table>
           </div>
         )}
+
+        <ItemModal show={showModal} onClose={() => setShowModal(false)} item={selected} />
       </div>
     </div>
   );
