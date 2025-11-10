@@ -1,0 +1,16 @@
+{
+  "name": "octofit-tracker-frontend",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom"
+  },
+  "dependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-router-dom": "^6.0.0",
+    "bootstrap": "^5.0.0"
+  }
+}
