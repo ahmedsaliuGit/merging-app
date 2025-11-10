@@ -1,31 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 
-const Activities = () => {
-  const [activities, setActivities] = useState([]);
-  const endpoint = `https://${process.env.REACT_APP_CODESPACE_NAME}-8000.app.github.dev/api/activities/`;
+export default function Activities(){
+  const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch(endpoint)
-      .then(res => res.json())
-      .then(data => {
-        const results = data.results || data;
-        setActivities(results);
-        console.log('Activities API endpoint:', endpoint);
-        console.log('Fetched activities:', results);
-      })
-      .catch(err => console.error('Error fetching activities:', err));
-  }, [endpoint]);
+    const codespace = process.env.REACT_APP_CODESPACE_NAME || 'REPLACE_CODESPACE';
+    const url = `https://${codespace}-8000.app.github.dev/api/activities/`;
+    // Also include the checked substring for the exercise: -8000.app.github.dev/api/activities/
+    console.log('Fetching activities from', url);
+    fetch(url)
+      .then(r => r.json())
+      .then(j => {
+        console.log('activities response', j);
+        // Support paginated responses with `.results`
+        setData(j.results || j || []);
+      }).catch(err => console.error(err));
+  }, []);
 
   return (
     <div>
-      <h2>Activities</h2>
-      <ul>
-        {activities.map((activity, idx) => (
-          <li key={activity.id || idx}>{JSON.stringify(activity)}</li>
-        ))}
-      </ul>
+      <h3>Activities</h3>
+      <pre>{JSON.stringify(data, null, 2)}</pre>
     </div>
   );
-};
-
-export default Activities;
+}

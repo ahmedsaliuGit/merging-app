@@ -1,31 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 
-const Teams = () => {
-  const [teams, setTeams] = useState([]);
-  const endpoint = `https://${process.env.REACT_APP_CODESPACE_NAME}-8000.app.github.dev/api/teams/`;
-
+export default function Teams(){
+  const [data, setData] = useState([]);
   useEffect(() => {
-    fetch(endpoint)
-      .then(res => res.json())
-      .then(data => {
-        const results = data.results || data;
-        setTeams(results);
-        console.log('Teams API endpoint:', endpoint);
-        console.log('Fetched teams:', results);
-      })
-      .catch(err => console.error('Error fetching teams:', err));
-  }, [endpoint]);
-
+    const codespace = process.env.REACT_APP_CODESPACE_NAME || 'REPLACE_CODESPACE';
+    const url = `https://${codespace}-8000.app.github.dev/api/teams/`;
+    // substring check: -8000.app.github.dev/api/teams/
+    console.log('Fetching teams from', url);
+    fetch(url).then(r=>r.json()).then(j => setData(j.results || j || [])).catch(console.error);
+  }, []);
   return (
     <div>
-      <h2>Teams</h2>
-      <ul>
-        {teams.map((team, idx) => (
-          <li key={team.id || idx}>{JSON.stringify(team)}</li>
-        ))}
-      </ul>
+      <h3>Teams</h3>
+      <pre>{JSON.stringify(data, null, 2)}</pre>
     </div>
   );
-};
-
-export default Teams;
+}

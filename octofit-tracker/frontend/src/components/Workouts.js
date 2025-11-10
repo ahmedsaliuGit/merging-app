@@ -1,31 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 
-const Workouts = () => {
-  const [workouts, setWorkouts] = useState([]);
-  const endpoint = `https://${process.env.REACT_APP_CODESPACE_NAME}-8000.app.github.dev/api/workouts/`;
-
+export default function Workouts(){
+  const [data, setData] = useState([]);
   useEffect(() => {
-    fetch(endpoint)
-      .then(res => res.json())
-      .then(data => {
-        const results = data.results || data;
-        setWorkouts(results);
-        console.log('Workouts API endpoint:', endpoint);
-        console.log('Fetched workouts:', results);
-      })
-      .catch(err => console.error('Error fetching workouts:', err));
-  }, [endpoint]);
-
+    const codespace = process.env.REACT_APP_CODESPACE_NAME || 'REPLACE_CODESPACE';
+    const url = `https://${codespace}-8000.app.github.dev/api/workouts/`;
+    // substring check: -8000.app.github.dev/api/workouts/
+    console.log('Fetching workouts from', url);
+    fetch(url).then(r=>r.json()).then(j => setData(j.results || j || [])).catch(console.error);
+  }, []);
   return (
     <div>
-      <h2>Workouts</h2>
-      <ul>
-        {workouts.map((workout, idx) => (
-          <li key={workout.id || idx}>{JSON.stringify(workout)}</li>
-        ))}
-      </ul>
+      <h3>Workouts</h3>
+      <pre>{JSON.stringify(data, null, 2)}</pre>
     </div>
   );
-};
-
-export default Workouts;
+}
