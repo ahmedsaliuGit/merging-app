@@ -5,14 +5,18 @@ import Leaderboard from './components/Leaderboard';
 import Teams from './components/Teams';
 import Users from './components/Users';
 import Workouts from './components/Workouts';
+import './App.css';
 
 export default function App() {
   return (
     <div className="container py-4">
-      <nav className="navbar navbar-expand-lg navbar-light bg-light mb-4">
-        <Link className="navbar-brand" to="/">OctoFit</Link>
+      <nav className="navbar navbar-expand-lg navbar-light mb-4 nav-custom">
+        <Link className="navbar-brand d-flex align-items-center" to="/">
+          <img src="/octofitapp-small.svg" alt="OctoFit" width="36" height="36" className="me-2" />
+          <span className="brand-text">OctoFit</span>
+        </Link>
         <div className="collapse navbar-collapse">
-          <ul className="navbar-nav mr-auto">
+          <ul className="navbar-nav me-auto">
             <li className="nav-item"><Link className="nav-link" to="/activities">Activities</Link></li>
             <li className="nav-item"><Link className="nav-link" to="/leaderboard">Leaderboard</Link></li>
             <li className="nav-item"><Link className="nav-link" to="/teams">Teams</Link></li>
